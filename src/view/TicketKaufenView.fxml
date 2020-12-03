@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="546.0" prefWidth="726.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.TicketKaufenController">
+   <children>
+      <TableView fx:id="eventTableView" layoutX="14.0" layoutY="253.0" onMouseClicked="#selectEvent" prefHeight="246.0" prefWidth="282.0" />
+      <Label fx:id="avTicketLabel" layoutX="84.0" layoutY="136.0" text="0" textAlignment="JUSTIFY">
+         <font>
+            <Font name="System Bold" size="41.0" />
+         </font>
+      </Label>
+      <TextField fx:id="ticketNumberTextField" editable="false" layoutX="22.0" layoutY="211.0" onKeyTyped="#verifyNumber" promptText="How many tickets to buy" />
+      <Button fx:id="buyTicketBtn" disable="true" layoutX="209.0" layoutY="210.0" mnemonicParsing="false" onAction="#buyTicket" prefHeight="26.0" prefWidth="69.0" text="Buy" />
+      <PieChart fx:id="pieChart" layoutX="303.0" layoutY="69.0" prefHeight="452.0" prefWidth="414.0" />
+   </children>
+</AnchorPane>
