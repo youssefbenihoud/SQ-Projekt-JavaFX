@@ -6,6 +6,7 @@
 package service;
 
 import bean.Event;
+import bean.Nutzer;
 import bean.Ticket;
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class TicketFacade extends AbstractFacade<Ticket>{
     }
     
     EventFacade eventFacade;
+    NutzerFacade nutzerFacade;
     
     
     
@@ -74,11 +76,12 @@ public class TicketFacade extends AbstractFacade<Ticket>{
     /**
      * a Method to buy a Ticket, we change the status of ticket if bought
      * @param eventID
+     * @param nutzerID
      * @param numberOfTickets
      * @return -1 if Event is Null, -2 if wrong type, -3 if the Amount of wished Tickets are greater the the Available Tickets 
      * 
      */
-    public int buyTicket(Long eventID, int numberOfTickets){
+    public int buyTicket(Long eventID, String nutzerID, int numberOfTickets){
         eventFacade = new EventFacade();
         Event ev = eventFacade.find(eventID);
         int ticketsCount = findByGekauft(eventID, -1).size();
@@ -91,9 +94,12 @@ public class TicketFacade extends AbstractFacade<Ticket>{
                 return -3; // numberOfTickets are greater than the Available Tickets
             }else {
                 List<Ticket> availableTickets = findByGekauft(eventID, -1);
+                nutzerFacade = new NutzerFacade();
                 for(int i = 0 ; i < numberOfTickets ; i++){
-                    // TODO: methode to connect the sold tickets to the user
                     Ticket t = availableTickets.get(i); // we get the Ticket
+                    // TODO: methode to connect the sold tickets to the user
+                    Nutzer n = nutzerFacade.find(nutzerID);
+                    t.setNutzer(n);
                     t.setGekauft(1); // Change the Status
                     edit(t); // Edit in the Database
                 }

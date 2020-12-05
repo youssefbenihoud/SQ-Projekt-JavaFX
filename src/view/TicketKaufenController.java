@@ -6,6 +6,7 @@
 package view;
 
 import bean.Event;
+import bean.Nutzer;
 import helper.EventFxHelper;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,6 +26,7 @@ import javafx.scene.paint.Color;
 import service.EventFacade;
 import service.TicketFacade;
 import sun.util.logging.resources.logging;
+import util.Session;
 
 /**
  * FXML Controller class
@@ -72,8 +74,8 @@ public class TicketKaufenController implements Initializable {
         // verify how many tickets if greater than the available tickets
         // verify if the typed number is less than 0
         Event e = eventFxHelper.getSelected();
-        ticketFacade.buyTicket(e.getId(), new Integer(ticketNumberTextField.getText()));
-
+        Nutzer nutzer = (Nutzer) Session.getAttribut("connectedUser");
+        ticketFacade.buyTicket(e.getId(),nutzer.getId(), new Integer(ticketNumberTextField.getText()));
         fillTextLabel();
         editLabelByBoughtTickets(e.getId());
         showChart(e.getId());

@@ -27,6 +27,18 @@ public class Ticket implements Serializable {
     private int gekauft; // 1 yes -1 no
     @ManyToOne
     private Event event = new Event();
+    @ManyToOne
+    private Nutzer nutzer;
+
+    public Ticket() {
+    }
+
+    public Ticket(int gekauft) {
+        this.gekauft = gekauft;
+    }
+    
+    
+    
 
     public int getGekauft() {
         return gekauft;
@@ -43,6 +55,16 @@ public class Ticket implements Serializable {
 
     public void setEvent(Event event) {
         this.event = event;
+    }
+
+    public Nutzer getNutzer() {
+        if(nutzer == null )
+            nutzer = new Nutzer();
+        return nutzer;
+    }
+
+    public void setNutzer(Nutzer nutzer) {
+        this.nutzer = nutzer;
     }
     
     
