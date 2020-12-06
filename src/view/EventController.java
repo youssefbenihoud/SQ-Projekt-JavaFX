@@ -7,7 +7,6 @@ package view;
 
 import java.net.URL;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,8 +14,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import service.EventFacade;
@@ -41,31 +41,31 @@ public class EventController implements Initializable {
     private Label errorLog;
 
     @FXML
-    private TextField total;
+    private Spinner total;
 
     @FXML
     private Button createButton;
 
     @FXML
-    public void createEvent(ActionEvent event) { // to create an Event with CreateButton
-        int res = eventFacade.create(name.getText(), Date.valueOf(datePicker.getValue()), new Integer(total.getText())); // create an Event
-        if (res < 0) {
-            errorLog.setText("Input Number Only");
-            errorLog.setTextFill(Color.RED);
-            createButton.setDisable(true);
-        }
-    }
+    private Spinner greenSP;
+    
+     @FXML
+    private Spinner orangeSP;
 
     @FXML
-    public void verifyNumber(KeyEvent event) { // to verify the typed Number in TextField
+    private Spinner redSP;
 
-        String inputText = event.getCharacter();
-        if (eventFacade.verifyNumberInput(inputText) == 1 || eventFacade.verifyNumberInput(total.getText()) == 1) {
-            setLabelandButton("Good", false, Color.GREEN);
-        } else {
-            setLabelandButton("Input Digits Only!", true, Color.RED);
+
+    @FXML
+    public void createEvent(ActionEvent event) { // to create an Event with CreateButton
+        int res = eventFacade.create(name.getText(), Date.valueOf(datePicker.getValue()), new Integer(getValueOfSp(total)), 
+                getValueOfSp(greenSP), getValueOfSp(orangeSP), getValueOfSp(redSP)); // create an Event
+        if (res < 0) {
+            setLabelandButton("Input Number Only", true, Color.RED);
         }
     }
+
+    
 
     private void setLabelandButton(String logError, Boolean btnDisable, Color myColor) {
         errorLog.setText(logError);
@@ -89,11 +89,11 @@ public class EventController implements Initializable {
         this.name = name;
     }
 
-    public TextField getTotal() {
+    public Spinner getTotal() {
         return total;
     }
 
-    public void setTotal(TextField total) {
+    public void setTotal(Spinner total) {
         this.total = total;
     }
 
@@ -111,8 +111,23 @@ public class EventController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        createButton.setDisable(true);
+        //createButton.setDisable(true);
 
+        //Configure Spinner
+        setSpinnerValueFactory(greenSP, 10, 30, 10, 1);
+        setSpinnerValueFactory(orangeSP, 5, 10, 5, 1);
+        setSpinnerValueFactory(redSP, 1, 5, 1, 1);
+        setSpinnerValueFactory(total, 10, 1000, 10, 1);
+        
+    }
+    
+    private void setSpinnerValueFactory(Spinner colorSp, int min, int max, int iniVal, int incrVal){
+        SpinnerValueFactory<Integer> colorSVF = new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, iniVal,incrVal);
+        colorSp.setValueFactory(colorSVF);
+    }
+    
+    private String getValueOfSp(Spinner sp){
+        return sp.getValue().toString();
     }
 
 }
