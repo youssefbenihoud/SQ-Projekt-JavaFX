@@ -17,6 +17,8 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.InputMethodEvent;
@@ -45,7 +47,7 @@ public class TicketKaufenController implements Initializable {
     TicketFacade ticketFacade = new TicketFacade();
 
     @FXML
-    private TextField ticketNumberTextField;
+    private Spinner ticketNumberTextField;
 
     @FXML
     private Button buyTicketBtn;
@@ -63,7 +65,8 @@ public class TicketKaufenController implements Initializable {
         Event e = eventFxHelper.getSelected();
         fillTextLabel();
         if (e != null) {
-            ticketNumberTextField.setEditable(true);
+            setSpinnerValueFactory(ticketNumberTextField, 1, 
+                    ticketFacade.findByGekauft(e.getId(), -1).size(), 0, 1);
         }
         editLabelByBoughtTickets(e.getId());
         showChart(e.getId());
@@ -74,26 +77,17 @@ public class TicketKaufenController implements Initializable {
         // verify how many tickets if greater than the available tickets
         // verify if the typed number is less than 0
         Event e = eventFxHelper.getSelected();
-        Nutzer nutzer = (Nutzer) Session.getAttribut("connectedUser");
-        ticketFacade.buyTicket(e.getId(),nutzer.getId(), new Integer(ticketNumberTextField.getText()));
+        Nutzer nutzer = (Nutzer) Session.getAttribut("connectedUser"); // Get the Connected User after Connection
+        ticketFacade.buyTicket(e.getId(),nutzer.getId(), getValueOfSp(ticketNumberTextField));
+        
+        
         fillTextLabel();
         editLabelByBoughtTickets(e.getId());
         showChart(e.getId());
-        //eventFxHelper.setList(eventFacade.findAll());
 
     }
 
-    @FXML
-    void verifyNumber(KeyEvent event) { // Verifying the wrong Typed Numbers of wished Tickets
-        String inputText = event.getCharacter();
-        if (eventFacade.verifyNumberInput(inputText) != 1 || eventFacade.verifyNumberInput(ticketNumberTextField.getText()) != 1) {
-            ticketNumberTextField.setText("");
-            buyTicketBtn.setDisable(true);
-        } else {
-            buyTicketBtn.setDisable(false);
-        }
-    }
-
+  
     /**
      * Initializes the controller class.
      */
@@ -101,7 +95,6 @@ public class TicketKaufenController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         initHelper();
-        buyTicketBtn.setDisable(true);
     }
 
     /**
@@ -153,13 +146,13 @@ public class TicketKaufenController implements Initializable {
         if (e != null) {
 
             double gekaufteTickets = (double) (ticketFacade.findByGekauft(e.getId(), 1)).size() / (double) e.getTotalTickets();
-            PieChart.Data sliceG = new PieChart.Data("Gekauft", gekaufteTickets);
-            PieChart.Data sliceNG = new PieChart.Data("Nicht Gekauft", 1 - gekaufteTickets);
+            PieChart.Data sliceG = new PieChart.Data("Bought", gekaufteTickets);
+            PieChart.Data sliceNG = new PieChart.Data("Available", 1 - gekaufteTickets);
 
             pieChart.getData().add(sliceG);
             pieChart.getData().add(sliceNG);
         } else {
-            PieChart.Data slice = new PieChart.Data("Keine Infos", 1);
+            PieChart.Data slice = new PieChart.Data("No Infos", 1);
             pieChart.getData().add(slice);
         }
     }
@@ -188,11 +181,11 @@ public class TicketKaufenController implements Initializable {
         this.avTicketLabel = avTicketLabel;
     }
 
-    public TextField getTicketNumberTextField() {
+    public Spinner getTicketNumberTextField() {
         return ticketNumberTextField;
     }
 
-    public void setTicketNumberTextField(TextField ticketNumberTextField) {
+    public void setTicketNumberTextField(Spinner ticketNumberTextField) {
         this.ticketNumberTextField = ticketNumberTextField;
     }
 
@@ -210,6 +203,15 @@ public class TicketKaufenController implements Initializable {
 
     public void setPieChart(PieChart pieChart) {
         this.pieChart = pieChart;
+    }
+    
+    private String getValueOfSp(Spinner sp){
+        return sp.getValue().toString();
+    }
+    
+    private void setSpinnerValueFactory(Spinner colorSp, int min, int max, int iniVal, int incrVal){
+        SpinnerValueFactory<Integer> colorSVF = new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, iniVal,incrVal);
+        colorSp.setValueFactory(colorSVF);
     }
 
 }
