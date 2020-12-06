@@ -43,20 +43,12 @@ public class EventController implements Initializable {
     @FXML
     private Spinner total;
 
-    @FXML
-    private Spinner greenSP;
-    
-     @FXML
-    private Spinner orangeSP;
-
-    @FXML
-    private Spinner redSP;
 
 
     @FXML
     public void createEvent(ActionEvent event) { // to create an Event with CreateButton
-        eventFacade.create(name.getText(), Date.valueOf(datePicker.getValue()), new Integer(getValueOfSp(total)), 
-                getValueOfSp(greenSP), getValueOfSp(orangeSP), getValueOfSp(redSP)); // create an Event
+        eventFacade.create(name.getText(), Date.valueOf(datePicker.getValue()), new Integer(getValueOfSp(total)) /*, 
+                getValueOfSp(greenSP), getValueOfSp(orangeSP), getValueOfSp(redSP)*/); // create an Event
     }
 
 
@@ -87,9 +79,6 @@ public class EventController implements Initializable {
         //createButton.setDisable(true);
 
         //Configure Spinner
-        setSpinnerValueFactory(greenSP, 10, 30, 10, 1);
-        setSpinnerValueFactory(orangeSP, 5, 10, 5, 1);
-        setSpinnerValueFactory(redSP, 1, 5, 1, 1);
         setSpinnerValueFactory(total, 10, 1000, 10, 1);
         
     }

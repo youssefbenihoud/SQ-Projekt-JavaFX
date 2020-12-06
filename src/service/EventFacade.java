@@ -33,12 +33,10 @@ public class EventFacade extends AbstractFacade<Event> {
      * @param red
      * @return
      */
-    public void create(String name, Date myDate, int totalTickets, String green, String orange, String red) {
+    public void create(String name, Date myDate, int totalTickets) {
         ticketFacade = new TicketFacade();
         // Event creation , Attributes Setting
-        Event event = new Event(name,DateUtil.convert(myDate),
-                totalTickets,stringToPercent(green),
-                stringToPercent(orange),stringToPercent(red));
+        Event event = new Event(name,DateUtil.convert(myDate),totalTickets);
         create(event); // Event is now in DataBase
         ticketFacade.createTicketbyEvent(event.getId()); // Tickets will be created 
     }

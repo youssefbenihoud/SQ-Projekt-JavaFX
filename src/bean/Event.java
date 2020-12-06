@@ -31,9 +31,9 @@ public class Event implements Serializable {
     private Date date;
     private int totalTickets;
     
-    private double green;
+    /*private double green;
     private double orange;
-    private double red;
+    private double red;*/
     @OneToMany(mappedBy = "event")
     private List<Ticket> tickets;
 
@@ -50,8 +50,10 @@ public class Event implements Serializable {
         this.date = date;
         this.totalTickets = totalTickets;
     }
+    
+    
 
-    public Event(String name, Date date, int totalTickets, double green, double orange, double red) {
+   /* public Event(String name, Date date, int totalTickets, double green, double orange, double red) {
         this.name = name;
         this.date = date;
         this.totalTickets = totalTickets;
@@ -59,6 +61,14 @@ public class Event implements Serializable {
         this.orange = orange;
         this.red = red;
     }
+   */
+
+    public Event(String name, Date date, int totalTickets) {
+        this.name = name;
+        this.date = date;
+        this.totalTickets = totalTickets;
+    }
+    
     
     
 
@@ -79,7 +89,7 @@ public class Event implements Serializable {
         this.date = date;
     }
 
-    public double getGreen() {
+   /* public double getGreen() {
         return green;
     }
 
@@ -103,7 +113,7 @@ public class Event implements Serializable {
         this.red = red;
     }
     
-    
+    */
     
     
 
