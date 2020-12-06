@@ -20,14 +20,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.input.InputMethodEvent;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import service.EventFacade;
 import service.TicketFacade;
-import sun.util.logging.resources.logging;
 import util.Session;
 
 /**
@@ -55,7 +51,7 @@ public class TicketKaufenController implements Initializable {
     @FXML
     private PieChart pieChart = new PieChart();
 
-    private EventFxHelper eventFxHelper = new EventFxHelper(eventTableView, eventFacade.findAll());
+    private EventFxHelper eventFxHelper = new EventFxHelper(eventTableView, eventFacade.findAll()); // Helper that helps us fill the TableView with the wished List<Event>
 
     @FXML
     private Label avTicketLabel; // The Label that shows the Available Tickets ( Sorry for naming it errorLog )
@@ -63,31 +59,28 @@ public class TicketKaufenController implements Initializable {
     @FXML
     public void selectEvent(MouseEvent event) { // Selecting an Event
         Event e = eventFxHelper.getSelected();
-        fillTextLabel();
-        if (e != null) {
-            setSpinnerValueFactory(ticketNumberTextField, 1, 
-                    ticketFacade.findByGekauft(e.getId(), -1).size(), 0, 1);
+        fillTextLabel(); // Change the Color of the Available Tickets Number
+        if (e != null) { // Testing if selected Event is not Null
+            setSpinnerValueFactory(ticketNumberTextField, 1,
+                    ticketFacade.findByGekauft(e.getId(), -1).size(), 0, 1); // Setting the Maximal Numbers of Available Tickets, User can order.
+            editLabelByBoughtTickets(e.getId()); // Update the Label of Available Tickets after every Selection
+            showChart(e.getId()); // Update the Chart after Every Bought
         }
-        editLabelByBoughtTickets(e.getId());
-        showChart(e.getId());
+
     }
 
     @FXML
     void buyTicket(ActionEvent event) { // When Clicking the Buy Button
-        // verify how many tickets if greater than the available tickets
-        // verify if the typed number is less than 0
-        Event e = eventFxHelper.getSelected();
+        Event e = eventFxHelper.getSelected(); // Get the Selected Event chosen from the Table by the User
         Nutzer nutzer = (Nutzer) Session.getAttribut("connectedUser"); // Get the Connected User after Connection
-        ticketFacade.buyTicket(e.getId(),nutzer.getId(), getValueOfSp(ticketNumberTextField));
-        
-        
-        fillTextLabel();
-        editLabelByBoughtTickets(e.getId());
-        showChart(e.getId());
+        ticketFacade.buyTicket(e.getId(), nutzer.getId(), getValueOfSp(ticketNumberTextField)); // Call of the Buy Methode from TicketService
+
+        fillTextLabel(); // Change the Color of the Available Tickets Number ( Whether Green, Orange or Red )
+        editLabelByBoughtTickets(e.getId()); // Update the Label of Available Tickets after every Bought
+        showChart(e.getId()); // Update the Chart of Available Tickets after every Bought
 
     }
 
-  
     /**
      * Initializes the controller class.
      */
@@ -140,6 +133,11 @@ public class TicketKaufenController implements Initializable {
         avTicketLabel.setText(ticketRest + "");
     }
 
+    /**
+     * Update Chart after every Event Selection
+     *
+     * @param eventID
+     */
     public void showChart(Long eventID) {
         Event e = eventFacade.find(eventID);
         pieChart.getData().clear();
@@ -204,13 +202,13 @@ public class TicketKaufenController implements Initializable {
     public void setPieChart(PieChart pieChart) {
         this.pieChart = pieChart;
     }
-    
-    private String getValueOfSp(Spinner sp){
+
+    private String getValueOfSp(Spinner sp) {
         return sp.getValue().toString();
     }
-    
-    private void setSpinnerValueFactory(Spinner colorSp, int min, int max, int iniVal, int incrVal){
-        SpinnerValueFactory<Integer> colorSVF = new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, iniVal,incrVal);
+
+    private void setSpinnerValueFactory(Spinner colorSp, int min, int max, int iniVal, int incrVal) {
+        SpinnerValueFactory<Integer> colorSVF = new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, iniVal, incrVal);
         colorSp.setValueFactory(colorSVF);
     }
 

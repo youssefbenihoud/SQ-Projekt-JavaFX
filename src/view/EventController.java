@@ -44,9 +44,6 @@ public class EventController implements Initializable {
     private Spinner total;
 
     @FXML
-    private Button createButton;
-
-    @FXML
     private Spinner greenSP;
     
      @FXML
@@ -58,20 +55,45 @@ public class EventController implements Initializable {
 
     @FXML
     public void createEvent(ActionEvent event) { // to create an Event with CreateButton
-        int res = eventFacade.create(name.getText(), Date.valueOf(datePicker.getValue()), new Integer(getValueOfSp(total)), 
+        eventFacade.create(name.getText(), Date.valueOf(datePicker.getValue()), new Integer(getValueOfSp(total)), 
                 getValueOfSp(greenSP), getValueOfSp(orangeSP), getValueOfSp(redSP)); // create an Event
-        if (res < 0) {
-            setLabelandButton("Input Number Only", true, Color.RED);
-        }
     }
 
+
+    /**
+     * Set the given Spinner with the given Parameters
+     * @param colorSp
+     * @param min
+     * @param max
+     * @param iniVal
+     * @param incrVal 
+     */
+    private void setSpinnerValueFactory(Spinner colorSp, int min, int max, int iniVal, int incrVal){
+        SpinnerValueFactory<Integer> colorSVF = new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, iniVal,incrVal);
+        colorSp.setValueFactory(colorSVF);
+    }
     
-
-    private void setLabelandButton(String logError, Boolean btnDisable, Color myColor) {
-        errorLog.setText(logError);
-        errorLog.setTextFill(myColor);
-        createButton.setDisable(btnDisable);
+    private String getValueOfSp(Spinner sp){ // Parse the Value of Spinner to String
+        return sp.getValue().toString();
     }
+
+
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+        //createButton.setDisable(true);
+
+        //Configure Spinner
+        setSpinnerValueFactory(greenSP, 10, 30, 10, 1);
+        setSpinnerValueFactory(orangeSP, 5, 10, 5, 1);
+        setSpinnerValueFactory(redSP, 1, 5, 1, 1);
+        setSpinnerValueFactory(total, 10, 1000, 10, 1);
+        
+    }
+    
 
     public DatePicker getDatePicker() {
         return datePicker;
@@ -104,30 +126,4 @@ public class EventController implements Initializable {
     public void setErrorLog(Label errorLog) {
         this.errorLog = errorLog;
     }
-
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        //createButton.setDisable(true);
-
-        //Configure Spinner
-        setSpinnerValueFactory(greenSP, 10, 30, 10, 1);
-        setSpinnerValueFactory(orangeSP, 5, 10, 5, 1);
-        setSpinnerValueFactory(redSP, 1, 5, 1, 1);
-        setSpinnerValueFactory(total, 10, 1000, 10, 1);
-        
-    }
-    
-    private void setSpinnerValueFactory(Spinner colorSp, int min, int max, int iniVal, int incrVal){
-        SpinnerValueFactory<Integer> colorSVF = new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, iniVal,incrVal);
-        colorSp.setValueFactory(colorSVF);
-    }
-    
-    private String getValueOfSp(Spinner sp){
-        return sp.getValue().toString();
-    }
-
 }
