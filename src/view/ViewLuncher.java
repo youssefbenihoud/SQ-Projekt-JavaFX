@@ -22,7 +22,7 @@ public class ViewLuncher extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("TicketKaufenView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("UserView.fxml"));
         
         Scene scene = new Scene(root);
         
