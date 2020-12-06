@@ -5,6 +5,7 @@
  */
 package view;
 
+import bean.AvailableTicket;
 import bean.Event;
 import bean.Nutzer;
 import helper.EventFxHelper;

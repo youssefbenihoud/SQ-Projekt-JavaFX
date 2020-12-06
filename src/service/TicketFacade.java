@@ -5,6 +5,7 @@
  */
 package service;
 
+import bean.AvailableTicket;
 import bean.Event;
 import bean.Nutzer;
 import bean.Ticket;
@@ -58,19 +59,20 @@ public class TicketFacade extends AbstractFacade<Ticket> {
         if (ev != null) {
             int availableTickets = findByGekauft(eventID, -1).size();
             Double percentAvailable = (double) availableTickets / (double) ev.getTotalTickets();
-            return whichColor(percentAvailable, ev.getGreen(), ev.getOrange(), ev.getRed());
+            return whichColor(percentAvailable);
         }
 
         return -1;
     }
 
-    public int whichColor(double percentAvailable, double green, double orange, double red) {
+    public int whichColor(double percentAvailable) {
+        AvailableTicket at = null;
 
-        if (percentAvailable >= green) {
+        if (percentAvailable >= at.Green.getVl()) {
             return 1; // green
-        } else if (percentAvailable >= orange) {
+        } else if (percentAvailable >= at.Orange.getVl()) {
             return 2; // orange
-        } else if (percentAvailable > red) {
+        } else if (percentAvailable > at.Red.getVl()) {
             return 3; // red
         }
         return 4; // default Color
