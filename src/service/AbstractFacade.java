@@ -86,13 +86,13 @@ public class AbstractFacade<T> {
         return ((Long) q.getSingleResult()).intValue();
     }
     
-    public int verifyNumberInput(String text){
+    /*public int verifyNumberInput(String text){
         String regex = "^[0-9]*$";
         if(text.matches(regex)){
             return 1;
         }
         return -1;
             
-    }
+    }*/
     
 }

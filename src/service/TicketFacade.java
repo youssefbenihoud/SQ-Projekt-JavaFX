@@ -7,8 +7,9 @@ package service;
 
 import bean.AvailableTicket;
 import bean.Event;
-import bean.Nutzer;
+import bean.User;
 import bean.Ticket;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ public class TicketFacade extends AbstractFacade<Ticket> {
     }
 
     EventFacade eventFacade;
-    NutzerFacade nutzerFacade;
+    UserFacade userFacade;
 
     /**
      * Tickets to create, the Amount of tickets depends on Event and How Many
@@ -40,7 +41,7 @@ public class TicketFacade extends AbstractFacade<Ticket> {
             for (int i = 0; i < event.getTotalTickets(); i++) { // How Many Ticket to create, depending on how many totalTickets for the Event
                 Ticket ticket = new Ticket();
                 ticket.setEvent(event);
-                ticket.setGekauft(-1); // default : nicht gekauft 
+                ticket.setBought(-1); // default : nicht gekauft 
                 create(ticket);
             }
             return 1; // All Tickets are added with the event
@@ -56,10 +57,12 @@ public class TicketFacade extends AbstractFacade<Ticket> {
     public int colorOfAvailability(Long eventID) {
         eventFacade = new EventFacade();
         Event ev = eventFacade.find(eventID);
-        if (ev != null) {
-            int availableTickets = findByGekauft(eventID, -1).size();
+        try {
+            int availableTickets = findByBought(eventID, -1).size();
             Double percentAvailable = (double) availableTickets / (double) ev.getTotalTickets();
             return whichColor(percentAvailable);
+        }catch(Exception ex){
+            System.out.println("Exception colorOfAvailability :"+ex);
         }
 
         return -1;
@@ -68,9 +71,13 @@ public class TicketFacade extends AbstractFacade<Ticket> {
     public int whichColor(double percentAvailable) {
         AvailableTicket at = null;
 
-        if (percentAvailable >= at.Green.getVl()) {
+        if (percentAvailable <= 0) {
+            percentAvailable = 0.0;
+        }
+
+        if (percentAvailable > at.Green.getVl()) {
             return 1; // green
-        } else if (percentAvailable >= at.Orange.getVl()) {
+        } else if (percentAvailable > at.Orange.getVl()) {
             return 2; // orange
         } else if (percentAvailable > at.Red.getVl()) {
             return 3; // red
@@ -82,52 +89,56 @@ public class TicketFacade extends AbstractFacade<Ticket> {
      * a Method to buy a Ticket, we change the status of ticket if bought
      *
      * @param eventID
-     * @param nutzerID
-     * @param numberOfTickets
+     * @param userID
+     * @param numberOfTicket
      * @return -1 if Event is Null, -2 if wrong type, -3 if the Amount of wished
      * Tickets are greater the the Available Tickets
      *
      */
-    public int buyTicket(Long eventID, String nutzerID, String nbrticktsSp) {
+    public int buyTicket(Long eventID, String userID, String numberOfTicket) {
         eventFacade = new EventFacade();
-        int numberOfTickets = Integer.parseInt(nbrticktsSp);
+        int numberOfTickets = Integer.parseInt(numberOfTicket);
         Event ev = eventFacade.find(eventID);
-        int ticketsCount = findByGekauft(eventID, -1).size();
-        if (ev == null) {
-            return -1; // event is null
-        } else { // if the found Event is not Null
-            if (numberOfTickets < 0 || verifyNumberInput(String.valueOf(numberOfTickets)) < 0) {
+        int ticketsCount = findByBought(eventID, -1).size();
+        try { // if the found Event is not Null
+            if (numberOfTickets < 0) {
                 return -2; // numberOfTickets less than 0 or the Available or is not Digital
             } else if (numberOfTickets > ticketsCount) {
                 return -3; // numberOfTickets are greater than the Available Tickets
             } else {
-                List<Ticket> availableTickets = findByGekauft(eventID, -1); // List of not bought Tickets
-                nutzerFacade = new NutzerFacade(); // Calling the Service of Nutzer
+                List<Ticket> availableTickets = findByBought(eventID, -1); // List of not bought Tickets
+                userFacade = new UserFacade(); // Calling the Service of NuUser               
                 for (int i = 0; i < numberOfTickets; i++) {
                     Ticket t = availableTickets.get(i); // we get the Ticket
                     // TODO: methode to connect the sold tickets to the user
-                    Nutzer n = nutzerFacade.find(nutzerID); // Find the User
-                    t.setNutzer(n); // Set the Ticket bought from the connected User to the User
-                    t.setGekauft(1); // Change the Status
+                    User u = userFacade.find(userID); // Find the User
+                    t.setUser(u); // Set the Ticket bought from the connected User to the User
+                    t.setBought(1); // Change the Status
                     edit(t); // Edit in the Database
                 }
 
-                //ticketsCount = findByGekauft(eventID, -1).size();
-                //ev.setTotalTickets(ticketsCount);
                 eventFacade.edit(ev); // Edit Event on the Database ( because it's linked with the changed Tickets )
+                return 1; // Success
             }
+        } catch (Exception e) {
+            System.out.println("Error "+e);
         }
-        return 1; // Success
+        return -1;
     }
 
     /**
      *
      * @param eventID
-     * @param gekauft
+     * @param bought
      * @return List of Tickets by Event and the Status of Ticket if bought or
      * not
      */
-    public List<Ticket> findByGekauft(Long eventID, int gekauft) {
-        return getEntityManager().createQuery("SELECT t FROM Ticket t WHERE t.event.id = " + eventID + " AND t.gekauft = " + gekauft + "").getResultList();
+    public List<Ticket> findByBought(Long eventID, int bought) {
+        List<Ticket> resultTicket = getEntityManager().createQuery("SELECT t FROM Ticket t WHERE t.event.id = " + eventID + " AND t.bought = " + bought + "").getResultList();
+        if (resultTicket == null) {
+            return new ArrayList<>();
+        }
+
+        return resultTicket;
     }
 }

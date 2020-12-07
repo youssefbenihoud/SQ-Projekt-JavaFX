@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
@@ -42,13 +43,16 @@ public class EventController implements Initializable {
 
     @FXML
     private Spinner total;
+    
+    @FXML
+    private CheckBox isPeriodical;
+
 
 
 
     @FXML
-    public void createEvent(ActionEvent event) { // to create an Event with CreateButton
-        eventFacade.create(name.getText(), Date.valueOf(datePicker.getValue()), new Integer(getValueOfSp(total)) /*, 
-                getValueOfSp(greenSP), getValueOfSp(orangeSP), getValueOfSp(redSP)*/); // create an Event
+    public void addEvent(ActionEvent event) { // to create an Event with CreateButton
+        eventFacade.addEvent(name.getText(), Date.valueOf(datePicker.getValue()), new Integer(getValueOfSp(total)), isPeriodical.isSelected()); // create an Event
     }
 
 
@@ -79,7 +83,7 @@ public class EventController implements Initializable {
         //createButton.setDisable(true);
 
         //Configure Spinner
-        setSpinnerValueFactory(total, 10, 1000, 10, 1);
+        setSpinnerValueFactory(total, 1, 1000, 75, 1);
         
     }
     
@@ -115,4 +119,14 @@ public class EventController implements Initializable {
     public void setErrorLog(Label errorLog) {
         this.errorLog = errorLog;
     }
+
+    public CheckBox getIsPeriodical() {
+        return isPeriodical;
+    }
+
+    public void setIsPeriodical(CheckBox isPeriodical) {
+        this.isPeriodical = isPeriodical;
+    }
+    
+    
 }

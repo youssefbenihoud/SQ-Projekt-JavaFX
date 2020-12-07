@@ -5,7 +5,7 @@
  */
 package view;
 
-import bean.Nutzer;
+import bean.User;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,8 +18,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
-import service.NutzerFacade;
+import service.UserFacade;
 import util.Session;
+import view.ViewLuncher;
 
 /**
  * FXML Controller class
@@ -44,8 +45,7 @@ public class UserController implements Initializable {
     private Label errorLog;
 
     @FXML
-    NutzerFacade nutzerFacade = new NutzerFacade();
-
+    UserFacade userFacade = new UserFacade();
     /**
      * Initializes the controller class.
      */
@@ -56,8 +56,8 @@ public class UserController implements Initializable {
 
     @FXML
     public void signupUser(ActionEvent event) {
-        Nutzer n = getParam();
-        int res = nutzerFacade.toSignUp(n.getId(), n.getPassword(), 2);
+        User n = getParam();
+        int res = userFacade.toSignUp(n.getId(), n.getPassword(), 2);
         if (res < 0) {
             errorLog.setText("Username already exists");
             labelFill(-1);
@@ -69,19 +69,19 @@ public class UserController implements Initializable {
 
     @FXML
     public void userLogin(ActionEvent event) throws IOException {
-        Nutzer n = getParam();
-        int res = nutzerFacade.toLogIn(n.getId(), n.getPassword());
+        User n = getParam();
+        int res = userFacade.toLogIn(n.getId(), n.getPassword());
         if (res == 1) {
-            Session.setAttribut(nutzerFacade.find(n.getId()), "connectedUser");
-            ViewLuncher.forWard(event, nutzerFacade.forwardByType(n.getId()), this.getClass());
+            Session.setAttribut(userFacade.find(n.getId()), "connectedUser");
+            ViewLuncher.forWard(event, userFacade.forwardByType(n.getId()), UserController.class);
         } else if (res < 0) {
             errorLog.setText("Username/Password is false");
             labelFill(-1);
         }
     }
 
-    private Nutzer getParam() {
-        Nutzer n = new Nutzer();
+    private User getParam() {
+        User n = new User();
         n.setId(usernameTF.getText());
         n.setPassword(passwordPF.getText());
         n.setType(2);

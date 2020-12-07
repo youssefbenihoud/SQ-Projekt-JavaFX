@@ -7,9 +7,11 @@ package view;
 
 import bean.AvailableTicket;
 import bean.Event;
-import bean.Nutzer;
+import bean.Ticket;
+import bean.User;
 import helper.EventFxHelper;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -60,22 +62,26 @@ public class TicketKaufenController implements Initializable {
     @FXML
     public void selectEvent(MouseEvent event) { // Selecting an Event
         Event e = eventFxHelper.getSelected();
-        fillTextLabel(); // Change the Color of the Available Tickets Number
-        if (e != null) { // Testing if selected Event is not Null
+        System.out.println("selectedEvent");
+        try {
+            fillTextLabel(); // Change the Color of the Available Tickets Number
             setSpinnerValueFactory(ticketNumberTextField, 1,
-                    ticketFacade.findByGekauft(e.getId(), -1).size(), 0, 1); // Setting the Maximal Numbers of Available Tickets, User can order.
+                    ticketFacade.findByBought(e.getId(), -1).size(), 1, 1); // Setting the Maximal Numbers of Available Tickets, User can order.
+            System.out.println("setSpinnerValueFactury End Call");
             editLabelByBoughtTickets(e.getId()); // Update the Label of Available Tickets after every Selection
             showChart(e.getId()); // Update the Chart after Every Bought
+        } catch (Exception ex) {
+            System.out.println("Error Select Event: " + ex);
         }
-
     }
 
     @FXML
     void buyTicket(ActionEvent event) { // When Clicking the Buy Button
         Event e = eventFxHelper.getSelected(); // Get the Selected Event chosen from the Table by the User
-        Nutzer nutzer = (Nutzer) Session.getAttribut("connectedUser"); // Get the Connected User after Connection
-        ticketFacade.buyTicket(e.getId(), nutzer.getId(), getValueOfSp(ticketNumberTextField)); // Call of the Buy Methode from TicketService
+        User user = (User) Session.getAttribut("connectedUser"); // Get the Connected User after Connection
+        ticketFacade.buyTicket(e.getId(), user.getId(), getValueOfSp(ticketNumberTextField)); // Call of the Buy Methode from TicketService
 
+        //updateTableView(e);
         fillTextLabel(); // Change the Color of the Available Tickets Number ( Whether Green, Orange or Red )
         editLabelByBoughtTickets(e.getId()); // Update the Label of Available Tickets after every Bought
         showChart(e.getId()); // Update the Chart of Available Tickets after every Bought
@@ -96,7 +102,7 @@ public class TicketKaufenController implements Initializable {
      */
     private void initHelper() {
         eventFxHelper = new EventFxHelper(eventTableView, eventFacade.findAll());
-        showChart(0L);
+        showChart(1L);
     }
 
     /**
@@ -130,7 +136,12 @@ public class TicketKaufenController implements Initializable {
      */
     private void editLabelByBoughtTickets(Long eventID) {
         Event e = eventFacade.find(eventID);
-        int ticketRest = (ticketFacade.findByGekauft(e.getId(), -1)).size();
+        int ticketRest = (ticketFacade.findByBought(e.getId(), -1)).size();
+        if (ticketRest <= 0) {
+            ticketRest = 0;
+            ticketNumberTextField.setDisable(true);
+            buyTicketBtn.setDisable(true);
+        }
         avTicketLabel.setText(ticketRest + "");
     }
 
@@ -144,7 +155,7 @@ public class TicketKaufenController implements Initializable {
         pieChart.getData().clear();
         if (e != null) {
 
-            double gekaufteTickets = (double) (ticketFacade.findByGekauft(e.getId(), 1)).size() / (double) e.getTotalTickets();
+            double gekaufteTickets = (double) (ticketFacade.findByBought(e.getId(), 1)).size() / (double) e.getTotalTickets();
             PieChart.Data sliceG = new PieChart.Data("Bought", gekaufteTickets);
             PieChart.Data sliceNG = new PieChart.Data("Available", 1 - gekaufteTickets);
 
@@ -153,6 +164,13 @@ public class TicketKaufenController implements Initializable {
         } else {
             PieChart.Data slice = new PieChart.Data("No Infos", 1);
             pieChart.getData().add(slice);
+        }
+    }
+    
+    private void updateTableView(Event selectedEvent){
+        List<Ticket> availableTickets = ticketFacade.findByBought(selectedEvent.getId(), -1);
+        if(availableTickets.isEmpty()){
+            eventFxHelper.remove(selectedEvent);
         }
     }
 
@@ -209,8 +227,15 @@ public class TicketKaufenController implements Initializable {
     }
 
     private void setSpinnerValueFactory(Spinner colorSp, int min, int max, int iniVal, int incrVal) {
-        SpinnerValueFactory<Integer> colorSVF = new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, iniVal, incrVal);
-        colorSp.setValueFactory(colorSVF);
+        if (max > min) {
+            colorSp.setDisable(false);
+            buyTicketBtn.setDisable(false);
+            SpinnerValueFactory<Integer> colorSVF = new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, iniVal, incrVal);
+            colorSp.setValueFactory(colorSVF);
+        } else {
+            colorSp.setDisable(true);
+            buyTicketBtn.setDisable(true);
+        }
     }
 
 }

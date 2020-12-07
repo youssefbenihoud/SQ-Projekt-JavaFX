@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 /**
  *
@@ -24,28 +23,28 @@ public class Ticket implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private int gekauft; // 1 yes -1 no
+    private int bought; // 1 yes -1 no
     @ManyToOne
     private Event event = new Event();
     @ManyToOne
-    private Nutzer nutzer;
+    private User user;
 
     public Ticket() {
     }
 
-    public Ticket(int gekauft) {
-        this.gekauft = gekauft;
+    public Ticket(int bought) {
+        this.bought = bought;
     }
     
     
     
 
-    public int getGekauft() {
-        return gekauft;
+    public int getBought() {
+        return bought;
     }
 
-    public void setGekauft(int gekauft) {
-        this.gekauft = gekauft;
+    public void setBought(int bought) {
+        this.bought = bought;
     }
     
 
@@ -57,14 +56,14 @@ public class Ticket implements Serializable {
         this.event = event;
     }
 
-    public Nutzer getNutzer() {
-        if(nutzer == null )
-            nutzer = new Nutzer();
-        return nutzer;
+    public User getUser() {
+        if(user == null )
+            user = new User();
+        return user;
     }
 
-    public void setNutzer(Nutzer nutzer) {
-        this.nutzer = nutzer;
+    public void setUser(User user) {
+        this.user = user;
     }
     
     

@@ -29,11 +29,9 @@ public class Event implements Serializable {
     private Long id;
     private String name;
     private Date date;
+    private boolean isPeriodical;
     private int totalTickets;
     
-    /*private double green;
-    private double orange;
-    private double red;*/
     @OneToMany(mappedBy = "event")
     private List<Ticket> tickets;
 
@@ -50,18 +48,16 @@ public class Event implements Serializable {
         this.date = date;
         this.totalTickets = totalTickets;
     }
-    
-    
 
-   /* public Event(String name, Date date, int totalTickets, double green, double orange, double red) {
+    public Event(String name, Date date, boolean isPeriodical, int totalTickets) {
         this.name = name;
         this.date = date;
+        this.isPeriodical = isPeriodical;
         this.totalTickets = totalTickets;
-        this.green = green;
-        this.orange = orange;
-        this.red = red;
     }
-   */
+    
+    
+    
 
     public Event(String name, Date date, int totalTickets) {
         this.name = name;
@@ -89,32 +85,7 @@ public class Event implements Serializable {
         this.date = date;
     }
 
-   /* public double getGreen() {
-        return green;
-    }
-
-    public void setGreen(double green) {
-        this.green = green;
-    }
-
-    public double getOrange() {
-        return orange;
-    }
-
-    public void setOrange(double orange) {
-        this.orange = orange;
-    }
-
-    public double getRed() {
-        return red;
-    }
-
-    public void setRed(double red) {
-        this.red = red;
-    }
-    
-    */
-    
+  
     
 
     public List<Ticket> getTickets() {
@@ -135,6 +106,14 @@ public class Event implements Serializable {
         if(totalTickets < 0)
             totalTickets = Math.abs(totalTickets);
         this.totalTickets = totalTickets;
+    }
+
+    public boolean isIsPeriodical() {
+        return isPeriodical;
+    }
+
+    public void setIsPeriodical(boolean isPeriodical) {
+        this.isPeriodical = isPeriodical;
     }
     
     
