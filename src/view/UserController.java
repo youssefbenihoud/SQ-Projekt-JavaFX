@@ -25,7 +25,7 @@ import view.ViewLuncher;
 /**
  * FXML Controller class
  *
- * @author youss
+ * @author Gruppe 3
  */
 public class UserController implements Initializable {
 

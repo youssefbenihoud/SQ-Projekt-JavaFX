@@ -13,7 +13,7 @@ import util.DateUtil;
 
 /**
  *
- * @author youss
+ * @author Gruppe 3
  */
 public class EventFacade extends AbstractFacade<Event> {
 

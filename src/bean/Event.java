@@ -16,7 +16,7 @@ import javax.persistence.OneToMany;
 
 /**
  *
- * @author youss
+ * @author Gruppe 3
  */
 @Entity
 public class Event implements Serializable {

@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 
 /**
  *
- * @author youss
+ * @author Gruppe 3
  */
 @Entity
 public class Ticket implements Serializable {

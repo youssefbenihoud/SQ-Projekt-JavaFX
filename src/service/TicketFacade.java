@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  *
- * @author youss
+ * @author Gruppe 3
  */
 public class TicketFacade extends AbstractFacade<Ticket> {
 

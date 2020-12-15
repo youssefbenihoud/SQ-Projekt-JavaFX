@@ -3,12 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/youss/Documents/NetBeansProjects/EventFX/src/view/ViewLuncher.java</file>
-            <file>file:/C:/Users/youss/Documents/NetBeansProjects/EventFX/src/service/NutzerFacade.java</file>
-            <file>file:/C:/Users/youss/Documents/NetBeansProjects/EventFX/src/view/UserController.java</file>
-            <file>file:/C:/Users/youss/Documents/NetBeansProjects/EventFX/src/view/TicketKaufenController.java</file>
-            <file>file:/C:/Users/youss/Documents/NetBeansProjects/EventFX/src/service/TicketFacade.java</file>
-            <file>file:/C:/Users/youss/Documents/NetBeansProjects/EventFX/src/service/EventFacade.java</file>
+            <file>file:/C:/Users/youss/Documents/NetBeansProjects/SQ-Projekt-JavaFX/src/bean/Event.java</file>
+            <file>file:/C:/Users/youss/Documents/NetBeansProjects/SQ-Projekt-JavaFX/src/view/TicketKaufenController.java</file>
+            <file>file:/C:/Users/youss/Documents/NetBeansProjects/SQ-Projekt-JavaFX/src/bean/AvailableTicket.java</file>
+            <file>file:/C:/Users/youss/Documents/NetBeansProjects/SQ-Projekt-JavaFX/src/bean/Ticket.java</file>
+            <file>file:/C:/Users/youss/Documents/NetBeansProjects/SQ-Projekt-JavaFX/src/view/ViewLuncher.java</file>
+            <file>file:/C:/Users/youss/Documents/NetBeansProjects/SQ-Projekt-JavaFX/src/service/EventFacade.java</file>
+            <file>file:/C:/Users/youss/Documents/NetBeansProjects/SQ-Projekt-JavaFX/src/service/UserFacade.java</file>
+            <file>file:/C:/Users/youss/Documents/NetBeansProjects/SQ-Projekt-JavaFX/src/view/EventController.java</file>
+            <file>file:/C:/Users/youss/Documents/NetBeansProjects/SQ-Projekt-JavaFX/src/META-INF/persistence.xml</file>
+            <file>file:/C:/Users/youss/Documents/NetBeansProjects/SQ-Projekt-JavaFX/src/view/UserController.java</file>
+            <file>file:/C:/Users/youss/Documents/NetBeansProjects/SQ-Projekt-JavaFX/src/service/TicketFacade.java</file>
+            <file>file:/C:/Users/youss/Documents/NetBeansProjects/SQ-Projekt-JavaFX/src/bean/User.java</file>
         </group>
     </open-files>
 </project-private>

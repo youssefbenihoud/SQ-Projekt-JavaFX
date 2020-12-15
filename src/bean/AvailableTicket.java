@@ -7,7 +7,7 @@ package bean;
 
 /**
  *
- * @author youss
+ * @author Gruppe 3
  */
 public enum AvailableTicket {
     Green(0.10), Orange(0.05), Red(0.0);

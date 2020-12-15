@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author pc&
+ * @author Gruppe 3
  */
 public class ViewLuncher extends Application {
     

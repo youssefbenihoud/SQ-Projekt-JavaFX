@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -17,13 +16,14 @@
             <Font name="System Bold" size="41.0" />
          </font>
       </Label>
-      <Spinner fx:id="ticketNumberTextField" editable="false" layoutX="22.0" layoutY="211.0"  />
-      <Button fx:id="buyTicketBtn"  layoutX="209.0" layoutY="210.0" mnemonicParsing="false" onAction="#buyTicket" prefHeight="26.0" prefWidth="69.0" text="Buy" />
+      <Spinner fx:id="ticketNumberTextField" layoutX="22.0" layoutY="211.0" />
+      <Button fx:id="buyTicketBtn" layoutX="209.0" layoutY="210.0" mnemonicParsing="false" onAction="#buyTicket" prefHeight="26.0" prefWidth="69.0" text="Buy" />
       <PieChart fx:id="pieChart" layoutX="303.0" layoutY="69.0" prefHeight="452.0" prefWidth="414.0" />
       <Label layoutX="28.0" layoutY="69.0" text="Actual Availability">
          <font>
             <Font size="44.0" />
          </font>
       </Label>
+      <Button layoutX="22.0" layoutY="24.0" mnemonicParsing="false" onAction="#logOut" text="Log Out" />
    </children>
 </AnchorPane>

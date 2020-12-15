@@ -20,5 +20,6 @@
       <Label fx:id="errorLog" layoutX="260.0" layoutY="61.0" />
       <CheckBox fx:id="isPeriodical" layoutX="225.0" layoutY="181.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="16.0" />
       <Label layoutX="136.0" layoutY="181.0" text="Periodical" />
+      <Button layoutX="25.0" layoutY="355.0" mnemonicParsing="false" onAction="#logOut" text="Log Out" />
    </children>
 </AnchorPane>

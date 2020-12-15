@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 
 /**
  *
- * @author youss
+ * @author Gruppe 3
  */
 @Entity
 public class User implements Serializable {

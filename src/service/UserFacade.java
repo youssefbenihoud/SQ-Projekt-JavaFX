@@ -9,7 +9,7 @@ import bean.User;
 
 /**
  *
- * @author youss
+ * @author Gruppe 3
  */
 public class UserFacade extends AbstractFacade<User> {
 

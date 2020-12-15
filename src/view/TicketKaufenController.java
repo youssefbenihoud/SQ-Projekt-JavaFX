@@ -10,13 +10,18 @@ import bean.Event;
 import bean.Ticket;
 import bean.User;
 import helper.EventFxHelper;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,7 +29,11 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import service.EventFacade;
 import service.TicketFacade;
 import util.Session;
@@ -32,7 +41,7 @@ import util.Session;
 /**
  * FXML Controller class
  *
- * @author youss
+ * @author Gruppe 3
  */
 public class TicketKaufenController implements Initializable {
 
@@ -81,11 +90,19 @@ public class TicketKaufenController implements Initializable {
         User user = (User) Session.getAttribut("connectedUser"); // Get the Connected User after Connection
         ticketFacade.buyTicket(e.getId(), user.getId(), getValueOfSp(ticketNumberTextField)); // Call of the Buy Methode from TicketService
 
+        String msg = "Congrats! You have just bought "+getValueOfSp(ticketNumberTextField)+" Tickets From the Event "
+                + e.getName() +"! ";
+        showDialog(msg);
         //updateTableView(e);
         fillTextLabel(); // Change the Color of the Available Tickets Number ( Whether Green, Orange or Red )
         editLabelByBoughtTickets(e.getId()); // Update the Label of Available Tickets after every Bought
         showChart(e.getId()); // Update the Chart of Available Tickets after every Bought
 
+    }
+    
+    @FXML
+    void logOut(ActionEvent event) throws IOException {
+        ViewLuncher.forWard(event, "UserView.fxml", EventController.class);
     }
 
     /**
@@ -236,6 +253,27 @@ public class TicketKaufenController implements Initializable {
             colorSp.setDisable(true);
             buyTicketBtn.setDisable(true);
         }
+    }
+    
+    private void showDialog(String msg) {
+        Stage dialogStage = new Stage();
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        Button okBtn = new Button("OK");
+
+        VBox vbox = new VBox(new Text(msg), okBtn);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(30));
+        
+        okBtn.setOnAction(new EventHandler<ActionEvent>() {
+      public void handle(ActionEvent event) {
+        dialogStage.hide();
+      }
+    });
+
+        dialogStage.setScene(new Scene(vbox));
+        dialogStage.show();
+        
+       
     }
 
 }
